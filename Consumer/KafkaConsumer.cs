@@ -30,7 +30,7 @@ namespace Consumer
                 {
                     var result = consumer.Consume(TimeSpan.FromSeconds(5));
 
-                    if (result.Message.Value == null)
+                    if (result == null)
                         continue;
 
                     _logger.LogInformation($"Consumed message '{result.Message.Value}' at: '{result.TopicPartitionOffset}'");

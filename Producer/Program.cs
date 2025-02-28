@@ -33,7 +33,7 @@ app.MapGet("/weatherforecast", (ILogger<ProducerBuilder<string,string>> _logger,
         var kafkaMessage = new Message<string, string>
         {
             Key = new Random().Next(999).ToString(),
-            Value = "Hello, Kafka"
+            Value = $"Hello, Kafka {DateTime.UtcNow}"
         };
 
         var deliveryResult = producerBuilder.ProduceAsync("test-topic", kafkaMessage).Result;
