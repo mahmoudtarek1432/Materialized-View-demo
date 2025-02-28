@@ -38,12 +38,14 @@ app.MapGet("/weatherforecast", (ILogger<ProducerBuilder<string,string>> _logger,
 
         var deliveryResult = producerBuilder.ProduceAsync("test-topic", kafkaMessage).Result;
 
-        _logger.LogInformation($"Message sent to Kafka {deliveryResult.TopicPartitionOffset}");
+        _logger.LogInformation($"Message sent to Kafka value: {deliveryResult.Value} offset: {deliveryResult.TopicPartitionOffset}");
     }
     catch
     {
         _logger.LogWarning("Kafka provider error");
     }
+
+    producerBuilder.Flush(cancelationToken);
 
 })
 .WithName("GetWeatherForecast");
