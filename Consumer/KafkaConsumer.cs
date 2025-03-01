@@ -1,5 +1,7 @@
 ﻿
 using Confluent.Kafka;
+using Producer.Models.Base;
+using Shared_Kernel.Constants;
 
 namespace Consumer
 {
@@ -20,9 +22,11 @@ namespace Consumer
                 AutoOffsetReset = AutoOffsetReset.Earliest
             };
 
-            using var consumer = new ConsumerBuilder<Ignore, string>(config).Build();
+            using var consumer = new ConsumerBuilder<int, IntegrationEvent>(config)
+                .SetValueDeserializer(new IntegrationEvent())
+                .Build();
 
-            consumer.Subscribe("test-topic");
+            consumer.Subscribe(EventTopics.UserIntegrationEvent);
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -33,7 +37,7 @@ namespace Consumer
                     if (result == null)
                         continue;
 
-                    _logger.LogInformation($"Consumed message '{result.Message.Value}' at: '{result.TopicPartitionOffset}'");
+                    _logger.LogInformation($"Consumed message for aggregateID '{result.Message.Value.AggregateId}' at: '{result.TopicPartitionOffset}'");
                 }
                 catch (ConsumeException e)
                 {

@@ -5,6 +5,7 @@ using Producer.Events;
 using Producer.Models.Base;
 using Producer.Models.Constants;
 using Producer.Models.Entity;
+using Shared_Kernel.Constants;
 using System.Text.Json;
 using System.Threading;
 
@@ -49,7 +50,7 @@ namespace Producer.EventHandlers
                   Value = integrationEventData
                 };
 
-                var deliveryResult = producerBuilder.ProduceAsync("UserIntegrationEvent", kafkaMessage).Result;
+                var deliveryResult = producerBuilder.ProduceAsync(EventTopics.UserIntegrationEvent, kafkaMessage).Result;
 
                 _logger.LogInformation($"Integration Event sent for key: {deliveryResult.Key} offset: {deliveryResult.TopicPartitionOffset}");
             }

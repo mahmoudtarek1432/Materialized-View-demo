@@ -25,24 +25,29 @@ namespace Producer.Database
                 .HasForeignKey(u => u.SupervisorId);
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var entries = ChangeTracker.Entries<BaseEntity>().ToList();
+
+            var result = await base.SaveChangesAsync(cancellationToken);
+
 
             foreach (var entry in entries)
             {
                 var entity = entry.Entity;
-                if (entry.State == EntityState.Added && entity.DomainEvents != null)
+                if (entity.DomainEvents != null)
                 {
                     entity.DomainEvents.ForEach(domainEvent =>
                     {
                         _mediator.Publish(domainEvent);
                     });
-                    
+
                 }
             }
 
-            return base.SaveChangesAsync(cancellationToken);
+
+
+            return result;
         }
     }
 }

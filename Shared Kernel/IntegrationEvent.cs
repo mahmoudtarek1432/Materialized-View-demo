@@ -1,16 +1,22 @@
 ﻿using Confluent.Kafka;
 using Producer.Models.Constants;
+using System.Text;
 using System.Text.Json;
 
 namespace Producer.Models.Base
 {
-    public class IntegrationEvent : ISerializer<IntegrationEvent>
+    public class IntegrationEvent : ISerializer<IntegrationEvent>, IDeserializer<IntegrationEvent>
     {
         public int AggregateId { get; set; }
         public string AggregateType { get; set; }
         public string Data { get; set; }
         public EventType EventType { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public IntegrationEvent Deserialize(ReadOnlySpan<byte> data, bool isNull, SerializationContext context)
+        {
+            return JsonSerializer.Deserialize<IntegrationEvent>(data);
+        }
 
         public byte[] Serialize(IntegrationEvent data, SerializationContext context)
         {
