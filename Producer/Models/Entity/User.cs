@@ -1,4 +1,6 @@
-﻿namespace Producer.Entity
+﻿using Producer.Models.Base;
+
+namespace Producer.Models.Entity
 {
     public class User : BaseEntity, IAggregateRoot
     {

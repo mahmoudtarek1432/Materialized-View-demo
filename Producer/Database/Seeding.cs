@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using Producer.Entity;
 using Producer.Events;
+using Producer.Models.Entity;
 
 namespace Producer.Database
 {

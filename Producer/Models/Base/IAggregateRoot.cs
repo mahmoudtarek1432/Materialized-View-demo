@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Producer.Entity
+namespace Producer.Models.Base
 {
     public interface IAggregateRoot
     {

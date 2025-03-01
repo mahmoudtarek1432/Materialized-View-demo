@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Producer.Entity;
+using Producer.Models.Entity;
 
 namespace Producer.Database
 {

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Producer.Entity;
+using Producer.Models.Entity;
 
 namespace Producer.Events
 {
