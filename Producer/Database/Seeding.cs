@@ -1,4 +1,6 @@
-﻿using Producer.Entity;
+﻿using MediatR;
+using Producer.Entity;
+using Producer.Events;
 
 namespace Producer.Database
 {
@@ -24,12 +26,16 @@ namespace Producer.Database
                     Email = Faker.StringFaker.AlphaNumeric(20),
                     SupervisorId = new Random().Next(1, 10) % 3 == 0 ? new Random().Next(1, i) : null,
                     Title = Faker.StringFaker.AlphaNumeric(10)
+                    
                 };
+
+                user.AddDomainEvent(new UserAddedDomainEvent(user));
+                users.Add(user);
             }
 
             context.Users.AddRange(users);
 
-            context.SaveChanges();
+            var result = context.SaveChangesAsync().Result;
         }
     }
 }
