@@ -17,6 +17,8 @@ namespace Producer.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Ignore<List<INotification>>();
+
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Supervisor)
                 .WithMany()

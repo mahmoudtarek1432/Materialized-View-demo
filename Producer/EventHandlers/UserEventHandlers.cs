@@ -1,4 +1,5 @@
 ﻿using Confluent.Kafka;
+using Confluent.SchemaRegistry.Serdes;
 using MediatR;
 using Producer.Events;
 using Producer.Models.Base;
@@ -13,7 +14,7 @@ namespace Producer.EventHandlers
     {
         private readonly ILogger<UserEventHandlers> _logger;
         private readonly ProducerConfig _config;
-        public UserEventHandlers()
+        public UserEventHandlers(ILogger<UserEventHandlers> logger)
         {
             _config = new ProducerConfig
             {
@@ -21,13 +22,16 @@ namespace Producer.EventHandlers
                 AllowAutoCreateTopics = true,
                 Acks = Acks.All
             };
+            _logger = logger;
         }
 
         public Task Handle(UserAddedDomainEvent notification, CancellationToken cancellationToken)
         {
             //send an event notification to a queue to be consumed by a topic
 
-            using var producerBuilder = new ProducerBuilder<int, IntegrationEvent>(_config).Build();
+            using var producerBuilder = new ProducerBuilder<int, IntegrationEvent>(_config)
+                .SetValueSerializer(new IntegrationEvent())
+                .Build();
 
             try
             {

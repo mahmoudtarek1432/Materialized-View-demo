@@ -9,7 +9,10 @@ builder.Services.AddSqlServer<ApplicationDatabase>(builder.Configuration.GetConn
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddMediatR(e =>  e.RegisterServicesFromAssembly(typeof(ApplicationDatabase).Assembly));
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -19,10 +22,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//seed the database
 
-app.MapGet("/weatherforecast", (ILogger<ProducerBuilder<string,string>> _logger, CancellationToken cancelationToken) =>
+app.MapGet("/weatherforecast", (ApplicationDatabase _db, CancellationToken cancelationToken) =>
 {
-    
+    Seeding.Seed(_db);
+
 
 })
 .WithName("GetWeatherForecast");

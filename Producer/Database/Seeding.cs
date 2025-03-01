@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Producer.Events;
 using Producer.Models.Entity;
 
@@ -21,10 +22,9 @@ namespace Producer.Database
             {
                 var user = new User
                 {
-                    Id = i,
                     Name = Faker.NameFaker.FirstName(),
                     Email = Faker.StringFaker.AlphaNumeric(20),
-                    SupervisorId = new Random().Next(1, 10) % 3 == 0 ? new Random().Next(1, i) : null,
+                    //SupervisorId = new Random().Next(1, 10) % 3 == 0 ? new Random().Next(1, i-1) : null,
                     Title = Faker.StringFaker.AlphaNumeric(10)
                     
                 };
@@ -34,8 +34,10 @@ namespace Producer.Database
             }
 
             context.Users.AddRange(users);
-
+            
             var result = context.SaveChangesAsync().Result;
+
+
         }
     }
 }
