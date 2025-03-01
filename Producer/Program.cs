@@ -1,6 +1,9 @@
 using Confluent.Kafka;
+using Producer.Database;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSqlServer<ApplicationDatabase>(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

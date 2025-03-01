@@ -6,7 +6,7 @@
         public string Name { get; set; }
         public string Email { get; set; }
         public string Title { get; set; }
-        public int SupervisorId { get; set; }
+        public int? SupervisorId { get; set; }
         public User? Supervisor { get; set; }
 
     }
