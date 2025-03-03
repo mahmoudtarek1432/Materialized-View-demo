@@ -12,7 +12,14 @@ namespace Producer.Database
             context.Database.EnsureCreated();
             if (context.Users.Any())
             {
-                context.Users.RemoveRange(context.Users);
+                var oldUsers = context.Users.ToList();
+
+                oldUsers.ForEach(user =>
+                {
+                    user.AddDomainEvent(new UserAddedDomainEvent(user));
+                });
+
+                context.Users.RemoveRange(oldUsers);
                 context.SaveChanges();
             }
             //seed data

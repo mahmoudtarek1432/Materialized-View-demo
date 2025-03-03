@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace Consumer.Infrastructure
 {
-    public class KafkaConsumer<Tkey, TValue> : IEventBrokerProvider<Tkey,TValue>
+    public class KafkaConsumer<Tkey, TValue> : IEventBrokerConsumer<Tkey,TValue>
     where TValue : ISerializer<TValue>, IDeserializer<TValue>, new()
     {
         public readonly IConfiguration _config;
