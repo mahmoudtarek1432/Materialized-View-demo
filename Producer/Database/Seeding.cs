@@ -16,11 +16,11 @@ namespace Producer.Database
 
                 oldUsers.ForEach(user =>
                 {
-                    user.AddDomainEvent(new UserAddedDomainEvent(user));
+                    user.AddDomainEvent(new UserDeletedDomainEvent { UserId = user.Id});
                 });
 
                 context.Users.RemoveRange(oldUsers);
-                context.SaveChanges();
+                var dresult = context.SaveChangesAsync().Result;
             }
             //seed data
             var users = new List<User>();
@@ -31,7 +31,6 @@ namespace Producer.Database
                 {
                     Name = Faker.NameFaker.FirstName(),
                     Email = Faker.StringFaker.AlphaNumeric(20),
-                    //SupervisorId = new Random().Next(1, 10) % 3 == 0 ? new Random().Next(1, i-1) : null,
                     Title = Faker.StringFaker.AlphaNumeric(10)
                     
                 };

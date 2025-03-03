@@ -5,8 +5,8 @@ using Consumer.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped(typeof(IEventBrokerConsumer<,>), typeof(KafkaConsumer<,>));
+builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddSingleton(typeof(IEventBrokerConsumer<,>), typeof(KafkaConsumer<,>));
 
 builder.Services.AddSqlServer<ApplicationDatabase>(builder.Configuration.GetConnectionString("DefaultConnection"));
 
