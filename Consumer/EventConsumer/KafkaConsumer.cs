@@ -29,21 +29,27 @@ namespace Consumer.EventConsumer
                  {
                      if (result.Message.Value.AggregateType == nameof(User))
                      {
-                         if (result.Message.Value.EventType == Producer.Models.Constants.EventType.Add
-                            ||
-                            result.Message.Value.EventType == Producer.Models.Constants.EventType.Update)
+                         if (result.Message.Value.EventType == Producer.Models.Constants.EventType.Add)
+                            
                          {
                              var externalUserModel = JsonSerializer.Deserialize<ExternalUserDto>(result.Message.Value.Data);
                              var user = externalUserModel.MapUser();
 
                              _userRepository.AddUser(user);
                          }
+                         else if (result.Message.Value.EventType == Producer.Models.Constants.EventType.Update)
+                         {
+                             var externalUserModel = JsonSerializer.Deserialize<ExternalUserDto>(result.Message.Value.Data);
+                             var user = externalUserModel.MapUser();
+
+                             _userRepository.UpdateUser(user);
+                         }
                          else if (result.Message.Value.EventType == Producer.Models.Constants.EventType.Delete)
                          {
                              var externalUserModel = JsonSerializer.Deserialize<ExternalUserDto>(result.Message.Value.Data);
                              var user = externalUserModel.MapUser();
 
-                             _userRepository.DeleteUser(user);
+                             _userRepository.DeleteUser(user.Id);
                          }
                      }
                  }, stoppingToken);

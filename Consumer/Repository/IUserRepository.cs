@@ -9,5 +9,6 @@ namespace Consumer.Repository
 
         public void AddUser(User user);
         public void DeleteUser(int userId);
+        public void UpdateUser(User user);
     }
 }

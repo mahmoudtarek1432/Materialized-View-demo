@@ -20,8 +20,17 @@ namespace Consumer.Repository
 
         public void AddUser(User user)
         {
-            connection.Execute("INSERT INTO Users (Id, Name, Title, SupervisorId) VALUES (@Id,@Name, @Title, @SupervisorId)",user);
+            connection.Execute("INSERT INTO Users (Id, Name, Title, SupervisorId) VALUES (@Id,@Name, @Title, @SupervisorId)", user);
+        }
 
+        public void DeleteUser(int userId)
+        {
+            connection.Execute("DELETE FROM Users WHERE Id = @Id", new { Id = userId });
+        }
+
+        public void UpdateUser(User user)
+        {
+            connection.Execute("UPDATE Users SET Name = @Name, Title = @Title, SupervisorId = @SupervisorId WHERE Id = @Id", user);
         }
     }
 }
