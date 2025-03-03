@@ -5,7 +5,7 @@ using Microsoft.Identity.Client;
 
 namespace Consumer.Repository
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly SqlConnection connection;
         public UserRepository(IConfiguration config)
@@ -18,6 +18,10 @@ namespace Consumer.Repository
             return connection.Query<User>("SELECT * FROM Users");
         }
 
+        public void AddUser(User user)
+        {
+            connection.Execute("INSERT INTO Users (Id, Name, Title, SupervisorId) VALUES (@Id,@Name, @Title, @SupervisorId)",user);
 
+        }
     }
 }

@@ -1,6 +1,12 @@
-using Consumer;
+using Consumer.Database;
+using Consumer.EventConsumer;
+using Consumer.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSingleton<IUserRepository, UserRepository>();
+
+builder.Services.AddSqlServer<ApplicationDatabase>(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

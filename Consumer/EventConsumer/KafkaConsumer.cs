@@ -1,16 +1,22 @@
 ﻿
 using Confluent.Kafka;
+using Consumer.DTO;
+using Consumer.Models.ExternalEntities;
+using Consumer.Repository;
 using Producer.Models.Base;
 using Shared_Kernel.Constants;
+using System.Text.Json;
 
-namespace Consumer
+namespace Consumer.EventConsumer
 {
     public class KafkaConsumer : BackgroundService
     {
         private readonly ILogger<KafkaConsumer> _logger;
-        public KafkaConsumer(ILogger<KafkaConsumer> logger)
+        private readonly IUserRepository _userRepository;
+        public KafkaConsumer(ILogger<KafkaConsumer> logger, IUserRepository userRepository)
         {
             _logger = logger;
+            _userRepository = userRepository;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -36,6 +42,14 @@ namespace Consumer
 
                     if (result == null)
                         continue;
+
+                    if(result.Message.Value.AggregateType == nameof(User))
+                    {
+                        var externalUserModel = JsonSerializer.Deserialize<ExternalUserDto>(result.Message.Value.Data);
+                        var user = externalUserModel.MapUser();
+
+                        _userRepository.AddUser(user);
+                    }
 
                     _logger.LogInformation($"Consumed message for aggregateID '{result.Message.Value.AggregateId}' at: '{result.TopicPartitionOffset}'");
                 }
