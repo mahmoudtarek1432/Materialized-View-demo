@@ -24,12 +24,12 @@ app.UseHttpsRedirection();
 
 //seed the database
 
-app.MapGet("/weatherforecast", (ApplicationDatabase _db, CancellationToken cancelationToken) =>
+app.MapGet("/refreshUsers", (ApplicationDatabase _db, CancellationToken cancelationToken) =>
 {
     Seeding.Seed(_db);
 
 
 })
-.WithName("GetWeatherForecast");
+.WithName("refreshUsers");
 
 app.Run();
