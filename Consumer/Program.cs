@@ -1,10 +1,12 @@
 using Consumer.Database;
 using Consumer.EventConsumer;
+using Consumer.Infrastructure;
 using Consumer.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped(typeof(IEventBrokerConsumer<,>), typeof(KafkaConsumer<,>));
 
 builder.Services.AddSqlServer<ApplicationDatabase>(builder.Configuration.GetConnectionString("DefaultConnection"));
 
@@ -12,7 +14,7 @@ builder.Services.AddSqlServer<ApplicationDatabase>(builder.Configuration.GetConn
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddHostedService<KafkaConsumer>();
+builder.Services.AddHostedService<IntegrationEventConsumer>();
 
 var app = builder.Build();
 

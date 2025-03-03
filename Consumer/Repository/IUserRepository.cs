@@ -8,5 +8,6 @@ namespace Consumer.Repository
         public IEnumerable<User> GetUsers();
 
         public void AddUser(User user);
+        public void DeleteUser(int userId);
     }
 }
