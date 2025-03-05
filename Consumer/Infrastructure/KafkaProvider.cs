@@ -18,12 +18,22 @@ namespace Consumer.Infrastructure
             _logger = logger;
         }
 
-        public ConsumerConfig Config()
+        public ConsumerConfig AConfig()
         {
             return new ConsumerConfig
             {
                 BootstrapServers = _config.GetSection("Kafka:BootstrapServers").Value,
-                GroupId = "integration-group",
+                GroupId = "integration-group-A",
+                AutoOffsetReset = AutoOffsetReset.Earliest
+            };
+        }
+
+        public ConsumerConfig BConfig()
+        {
+            return new ConsumerConfig
+            {
+                BootstrapServers = _config.GetSection("Kafka:BootstrapServers").Value,
+                GroupId = "integration-group-B",
                 AutoOffsetReset = AutoOffsetReset.Earliest
             };
         }
@@ -35,9 +45,9 @@ namespace Consumer.Infrastructure
                 .Build();
         }
 
-        public async Task Consume( Func<ConsumeResult<Tkey,TValue>,Task> process, CancellationToken stoppingToken)
+        public async Task Consume( Func<ConsumeResult<Tkey,TValue>,Task> process, string configuration, CancellationToken stoppingToken)
         {
-            var config = Config();
+            var config = configuration == "A"? AConfig() : BConfig();
 
             using var consumer = BuildConsumer(config);
 

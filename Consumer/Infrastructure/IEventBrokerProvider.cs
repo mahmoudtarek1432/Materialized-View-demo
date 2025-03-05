@@ -4,6 +4,6 @@ namespace Consumer.Infrastructure
 {
     public interface IEventBrokerConsumer<Tkey, TValue>
     {
-        Task Consume(Func<ConsumeResult<Tkey, TValue>, Task> process, CancellationToken stoppingToken);
+        Task Consume(Func<ConsumeResult<Tkey, TValue>, Task> process, string config, CancellationToken stoppingToken);
     }
 }

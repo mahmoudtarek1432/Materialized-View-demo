@@ -2,6 +2,7 @@ using Consumer.Database;
 using Consumer.EventConsumer;
 using Consumer.Infrastructure;
 using Consumer.Repository;
+using Producer.Models.Base;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,16 @@ builder.Services.AddSqlServer<ApplicationDatabase>(builder.Configuration.GetConn
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddHostedService<IntegrationEventConsumer>();
+builder.Services.AddHostedService(e =>
+{
+    return new IntegrationEventConsumer(
+        "A",
+        e.GetRequiredService<ILogger<IntegrationEventConsumer>>(),
+        e.GetRequiredService<IEventBrokerConsumer<int, IntegrationEvent>>(),
+        e.GetRequiredService<IUserRepository>());
+});
+
+
 
 var app = builder.Build();
 

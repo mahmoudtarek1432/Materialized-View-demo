@@ -12,14 +12,16 @@ namespace Consumer.EventConsumer
 {
     public class IntegrationEventConsumer : BackgroundService
     {
+        public string _config { get; set; }
         private readonly ILogger<IntegrationEventConsumer> _logger;
         private readonly IUserRepository _userRepository;
         private readonly IEventBrokerConsumer<int, IntegrationEvent> _consumer;
-        public IntegrationEventConsumer(ILogger<IntegrationEventConsumer> logger, IEventBrokerConsumer<int,IntegrationEvent> consumer, IUserRepository userRepository)
+        public IntegrationEventConsumer(string config, ILogger<IntegrationEventConsumer> logger, IEventBrokerConsumer<int,IntegrationEvent> consumer, IUserRepository userRepository)
         {
             _logger = logger;
             _userRepository = userRepository;
             _consumer = consumer;
+            _config = config;
         }
 
 
@@ -45,7 +47,9 @@ namespace Consumer.EventConsumer
                              _userRepository.DeleteUser(user.Id);
                          }
                      }
-                 }, stoppingToken);
+
+                     _logger.LogInformation($"Config: {_config}");
+                 }, _config, stoppingToken);
         }
     }
 }
