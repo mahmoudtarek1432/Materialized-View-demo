@@ -33,8 +33,8 @@ namespace Consumer.Infrastructure
             return new ConsumerConfig
             {
                 BootstrapServers = _config.GetSection("Kafka:BootstrapServers").Value,
-                GroupId = "integration-group-B",
-                AutoOffsetReset = AutoOffsetReset.Earliest
+                GroupId = "integration-group-x",
+                AutoOffsetReset = AutoOffsetReset.Latest
             };
         }
 

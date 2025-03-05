@@ -18,7 +18,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddHostedService(e =>
 {
     return new IntegrationEventConsumer(
-        "A",
+        "B",
         e.GetRequiredService<ILogger<IntegrationEventConsumer>>(),
         e.GetRequiredService<IEventBrokerConsumer<int, IntegrationEvent>>(),
         e.GetRequiredService<IUserRepository>());
