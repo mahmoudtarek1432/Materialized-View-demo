@@ -1,0 +1,48 @@
+services:
+
+  consumer:
+    image: ${DOCKER_REGISTRY-}consumer
+    build:
+        context: .
+        dockerfile: Consumer/Dockerfile
+    ports:
+    - "8081:8081"
+    depends_on:
+    - kafka
+
+  provider:
+    image: ${DOCKER_REGISTRY-}user
+    build:
+        context: .
+        dockerfile: User-producer/Dockerfile
+    ports:
+    - "8080:8080"
+    depends_on:
+    - kafka
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper
+    container_name: zookeeper
+    ports:
+        - 2181:2181
+    environment:
+        - ZOOKEEPER_CLIENT_PORT=2181
+        - ZOOKEEPER_TICK_TIME=2000
+    networks:
+        - kafka
+            
+  kafka:
+    image: confluentinc/cp-kafka
+    container_name: kafka
+    ports:
+        - 9092:9092
+    environment:
+        - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+        - KAFKA_BROKER_ID=1
+        - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+        - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+    networks:
+        - kafka
+
+networks:
+    kafka:
