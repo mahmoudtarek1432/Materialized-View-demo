@@ -1,12 +1,24 @@
 services:
 
-  consumer:
+  consumerA:
     image: ${DOCKER_REGISTRY-}consumer
     build:
         context: .
         dockerfile: Consumer/Dockerfile
     ports:
     - "8081:8081"
+    networks:
+        - kafka
+    depends_on:
+    - kafka
+
+  consumerB:
+    image: ${DOCKER_REGISTRY-}consumer
+    build:
+        context: .
+        dockerfile: Consumer/Dockerfile
+    ports:
+    - "8085:8085"
     networks:
         - kafka
     depends_on:
@@ -45,6 +57,7 @@ services:
         - KAFKA_BROKER_ID=1
         - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
         - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+        - KAFKA_CREATE_TOPICS=user-topic-test:3:1
     networks:
         - kafka
 

@@ -1,4 +1,5 @@
 ﻿using Confluent.Kafka;
+using Confluent.Kafka.Admin;
 using Confluent.SchemaRegistry.Serdes;
 using MediatR;
 using Producer.Events;
@@ -26,13 +27,30 @@ namespace Producer.EventHandlers
             _logger = logger;
         }
 
-        public Task Handle(UserAddedDomainEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(UserAddedDomainEvent notification, CancellationToken cancellationToken)
         {
             //send an event notification to a queue to be consumed by a topic
 
             using var producerBuilder = new ProducerBuilder<int, IntegrationEvent>(_config)
                 .SetValueSerializer(new IntegrationEvent())
                 .Build();
+
+            var adminClientBuilder = new AdminClientBuilder(new AdminClientConfig
+            {
+                BootstrapServers = "kafka:9092"
+            }).Build();
+
+            await adminClientBuilder.CreateTopicsAsync(new List<TopicSpecification>
+            {
+                new TopicSpecification
+                {
+                    Name = EventTopics.UserIntegrationEvent,
+                    NumPartitions = 2,
+                    ReplicationFactor = 1,
+                }
+            });
+
+            adminClientBuilder.Dispose();
 
             try
             {
@@ -60,8 +78,6 @@ namespace Producer.EventHandlers
             }
 
             producerBuilder.Flush(cancellationToken);
-
-            return Task.CompletedTask;
         }
 
         public Task Handle(UserUpdatedDomainEvent notification, CancellationToken cancellationToken)

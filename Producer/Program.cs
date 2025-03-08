@@ -29,7 +29,29 @@ app.MapGet("/refreshUsers", (ApplicationDatabase _db, CancellationToken cancelat
     Seeding.Seed(_db);
 
 
+    var adminClientBuilder = new AdminClientBuilder(new AdminClientConfig
+    {
+        BootstrapServers = "kafka:9092"
+    }).Build();
+
+    var info = adminClientBuilder.GetMetadata(TimeSpan.FromSeconds(10)).Topics.Select(e => $"Topic Name: {e.Topic} Topic Partitions Count: {e.Partitions.Count}");
+
+    return info;
 })
 .WithName("refreshUsers");
+
+
+app.MapGet("/topicMetadata", () =>
+{
+    var adminClientBuilder = new AdminClientBuilder(new AdminClientConfig
+    {
+        BootstrapServers = "kafka:9092"
+    }).Build();
+
+    var info = adminClientBuilder.GetMetadata(TimeSpan.FromSeconds(10)).Topics.Select(e => $"Topic Name: {e.Topic} Topic Partitions Count: {e.Partitions.Count}");
+
+    return info;
+})
+.WithName("topicMetadata");
 
 app.Run();

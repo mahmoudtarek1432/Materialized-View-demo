@@ -52,7 +52,7 @@ namespace Producer.EventHandlers
 
                 var deliveryResult = producerBuilder.ProduceAsync(EventTopics.UserIntegrationEvent, kafkaMessage).Result;
 
-                _logger.LogInformation($"Integration Event sent for key: {deliveryResult.Key} action: {deliveryResult.Value.EventType} offset: {deliveryResult.TopicPartitionOffset}");
+                _logger.LogInformation($"Integration Event sent for key: {deliveryResult.Key} action: {deliveryResult.Value.EventType} partition: {deliveryResult.Partition}");
             }
             catch
             {
@@ -89,7 +89,7 @@ namespace Producer.EventHandlers
 
                 var deliveryResult = producerBuilder.ProduceAsync(EventTopics.UserIntegrationEvent, kafkaMessage).Result;
 
-                _logger.LogInformation($"Integration Event sent for key: {deliveryResult.Key} action: {deliveryResult.Value.EventType} offset: {deliveryResult.TopicPartitionOffset}");
+                _logger.LogInformation($"Integration Event sent for key: {deliveryResult.Key} action: {deliveryResult.Value.EventType} partition: {deliveryResult.Partition}");
             }
             catch
             {
@@ -126,7 +126,7 @@ namespace Producer.EventHandlers
 
                 var deliveryResult = producerBuilder.ProduceAsync(EventTopics.UserIntegrationEvent, kafkaMessage).Result;
 
-                _logger.LogInformation($"Integration Event sent for key: {deliveryResult.Key} action: {deliveryResult.Value.EventType} offset: {deliveryResult.TopicPartitionOffset}");
+                _logger.LogInformation($"Integration Event sent for key: {deliveryResult.Key} action: {deliveryResult.Value.EventType} partition:  {deliveryResult.Partition}");
             }
             catch
             {

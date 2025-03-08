@@ -49,6 +49,7 @@ namespace Consumer.EventConsumer
                      }
 
                      _logger.LogInformation($"Config: {_config}");
+                     _logger.LogInformation($"Consumed message '{result.Message.Value.EventType}' at: partition '{result.Partition}'.");
                  }, _config, stoppingToken);
         }
     }
