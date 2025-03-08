@@ -19,7 +19,7 @@ namespace Producer.EventHandlers
         {
             _config = new ProducerConfig
             {
-                BootstrapServers = "localhost:9092",
+                BootstrapServers = "kafka:9092",
                 AllowAutoCreateTopics = true,
                 Acks = Acks.All
             };

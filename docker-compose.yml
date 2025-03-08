@@ -7,6 +7,8 @@ services:
         dockerfile: Consumer/Dockerfile
     ports:
     - "8081:8081"
+    networks:
+        - kafka
     depends_on:
     - kafka
 
@@ -17,6 +19,8 @@ services:
         dockerfile: User-producer/Dockerfile
     ports:
     - "8080:8080"
+    networks:
+    - kafka
     depends_on:
     - kafka
 
@@ -40,7 +44,7 @@ services:
         - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
         - KAFKA_BROKER_ID=1
         - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-        - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+        - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
     networks:
         - kafka
 
