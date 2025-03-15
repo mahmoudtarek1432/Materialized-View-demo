@@ -64,5 +64,28 @@ services:
     networks:
       - kafka
 
+  opensearch:
+    image: opensearchproject/opensearch
+    environment:
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: admin
+      network.host: 0.0.0.0
+      discovery.type: single-node
+      DISABLE_SECURITY_PLUGIN: true
+      compatibility.override_main_response_version: true
+    ports:
+      - 9200:9200
+      - 9600:9600
+
+  
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards
+    ports:
+      - 5601:5601
+    environment:
+      OPENSEARCH_HOSTS: '["http://opensearch:9200"]'
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
+    depends_on:
+      - opensearch
+
 networks:
   kafka:
