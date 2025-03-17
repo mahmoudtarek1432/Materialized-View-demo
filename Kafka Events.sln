@@ -13,6 +13,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "User-producer", "User-producer\User-producer.csproj", "{8EA33001-16BD-44C8-AEE6-426EC55A89CB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogConsumer", "LogConsumer\LogConsumer.csproj", "{6028C010-34D5-269A-BBF6-A4FA6EB8C82A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{8EA33001-16BD-44C8-AEE6-426EC55A89CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8EA33001-16BD-44C8-AEE6-426EC55A89CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8EA33001-16BD-44C8-AEE6-426EC55A89CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6028C010-34D5-269A-BBF6-A4FA6EB8C82A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6028C010-34D5-269A-BBF6-A4FA6EB8C82A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6028C010-34D5-269A-BBF6-A4FA6EB8C82A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6028C010-34D5-269A-BBF6-A4FA6EB8C82A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
