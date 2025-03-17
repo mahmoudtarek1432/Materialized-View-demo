@@ -4,8 +4,8 @@ using Consumer.DTO;
 using Consumer.Infrastructure;
 using Consumer.Models.ExternalEntities;
 using Consumer.Repository;
-using Producer.Models.Base;
 using Shared_Kernel.Constants;
+using Shared_Kernel.TopicMessages;
 using System.Text.Json;
 
 namespace Consumer.EventConsumer

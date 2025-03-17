@@ -2,7 +2,7 @@ using Consumer.Database;
 using Consumer.EventConsumer;
 using Consumer.Infrastructure;
 using Consumer.Repository;
-using Producer.Models.Base;
+using Shared_Kernel.TopicMessages;
 
 var builder = WebApplication.CreateBuilder(args);
 

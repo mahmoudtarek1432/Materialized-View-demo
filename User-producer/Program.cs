@@ -3,6 +3,7 @@ using Confluent.Kafka.Admin;
 using Producer.Database;
 using Producer.Models.Constants;
 using Shared_Kernel.Constants;
+using User_producer.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,5 +73,7 @@ app.MapGet("/topicInit", async () =>
 
 
 app.UseSwaggerUI();
+
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.Run();

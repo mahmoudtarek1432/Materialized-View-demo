@@ -3,7 +3,7 @@ using Producer.Models.Constants;
 using System.Text;
 using System.Text.Json;
 
-namespace Producer.Models.Base
+namespace Shared_Kernel.TopicMessages
 {
     public class IntegrationEvent : ISerializer<IntegrationEvent>, IDeserializer<IntegrationEvent>
     {

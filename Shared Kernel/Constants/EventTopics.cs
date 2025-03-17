@@ -9,5 +9,6 @@ namespace Shared_Kernel.Constants
     public class EventTopics
     {
         public const string UserIntegrationEvent = "user-topic";
+        public const string LoggingTopic = "log-topic";
     }
 }
