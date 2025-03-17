@@ -2,10 +2,10 @@
 using Confluent.SchemaRegistry.Serdes;
 using MediatR;
 using Producer.Events;
-using Producer.Models.Base;
 using Producer.Models.Constants;
 using Producer.Models.Entity;
 using Shared_Kernel.Constants;
+using Shared_Kernel.TopicMessages;
 using System.Text.Json;
 using System.Threading;
 
