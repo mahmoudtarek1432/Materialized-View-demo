@@ -1,8 +1,9 @@
 ﻿using Confluent.Kafka;
+using Consumer.Infrastructure;
 using Shared_Kernel.Constants;
 using System.Text.Json;
 
-namespace Consumer.Infrastructure
+namespace logConsumer.Infrastructure
 {
     public class KafkaConsumer<Tkey, TValue> : IEventBrokerConsumer<Tkey,TValue>
     where TValue : ISerializer<TValue>, IDeserializer<TValue>, new()

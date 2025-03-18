@@ -4,28 +4,27 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 8082
-EXPOSE 8083
+EXPOSE 8084
 
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Consumer/Consumer.csproj", "Consumer/"]
+COPY ["LogConsumer/LogConsumer.csproj", "LogConsumer/"]
 COPY ["Shared Kernel/Shared Kernel.csproj", "Shared Kernel/"]
-RUN dotnet restore "./Consumer/Consumer.csproj"
+RUN dotnet restore "./LogConsumer/LogConsumer.csproj"
 COPY . .
-WORKDIR "/src/Consumer"
-RUN dotnet build "./Consumer.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/LogConsumer"
+RUN dotnet build "./LogConsumer.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Consumer.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./LogConsumer.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Consumer.dll"]
+ENTRYPOINT ["dotnet", "LogConsumer.dll"]

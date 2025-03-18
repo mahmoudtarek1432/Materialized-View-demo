@@ -4,7 +4,6 @@ using Producer.Models.Base;
 using Producer.Models.Constants;
 using Shared_Kernel.Constants;
 using Shared_Kernel.TopicMessages;
-using User_producer.Models;
 
 namespace User_producer.Middleware
 {
@@ -15,13 +14,20 @@ namespace User_producer.Middleware
 
         public RequestLoggingMiddleware(RequestDelegate next)
         {
+            _config = new ProducerConfig
+            {
+                BootstrapServers = "kafka:9092",
+                AllowAutoCreateTopics = true,
+                Acks = Acks.All
+            };
             _next = next;
         }
 
         public async Task Invoke(HttpContext context)
         {
-            using var producerBuilder = new ProducerBuilder<Ignore, RequestLog>(_config)
+            using var producerBuilder = new ProducerBuilder<Null, RequestLog>(_config)
                 .SetValueSerializer(new RequestLog())
+                .SetKeySerializer(Confluent.Kafka.Serializers.Null)
                 .Build();
 
             try
@@ -36,7 +42,7 @@ namespace User_producer.Middleware
                     CreationDate = DateTime.Now,
                 };
 
-                var kafkaMessage = new Message<Ignore, RequestLog>
+                var kafkaMessage = new Message<Null, RequestLog>
                 {
                     Value = integrationEventData
                 };

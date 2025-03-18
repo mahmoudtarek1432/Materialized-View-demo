@@ -1,6 +1,8 @@
 using Confluent.Kafka;
-using Consumer.EventConsumer;
 using Consumer.Infrastructure;
+using logConsumer.EventConsumer;
+using logConsumer.Infrastructure;
+using OpenSearch.Client;
 using Shared_Kernel.TopicMessages;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,10 +35,19 @@ app.UseHttpsRedirection();
 
 
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/logGet", (IConfiguration _config) =>
 {
-    
+    var nodeAddress = new Uri(_config.GetConnectionString("opensearch") ?? throw new Exception());
+    var connection = new ConnectionSettings(nodeAddress).DefaultIndex("request");
+    var client = new OpenSearchClient(connection);
+
+
+    var response = client.Index<RequestLog>(new RequestLog(), x => x.Index("request"));
+
+    var log = client.Search<RequestLog>(e => e.Index("request"));
+
+    return log;
 })
-.WithName("GetWeatherForecast");
+.WithName("logGet");
 
 app.Run();

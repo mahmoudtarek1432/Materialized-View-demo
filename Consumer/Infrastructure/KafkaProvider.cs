@@ -1,6 +1,5 @@
 ﻿using Confluent.Kafka;
 using Consumer.DTO;
-using Producer.Models.Base;
 using Shared_Kernel.Constants;
 using System.Text.Json;
 

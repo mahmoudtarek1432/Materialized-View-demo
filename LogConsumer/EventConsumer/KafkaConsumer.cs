@@ -6,7 +6,7 @@ using Shared_Kernel.Constants;
 using Shared_Kernel.TopicMessages;
 using System.Text.Json;
 
-namespace Consumer.EventConsumer
+namespace logConsumer.EventConsumer
 {
     public class LogConsumer : BackgroundService
     {
@@ -25,13 +25,18 @@ namespace Consumer.EventConsumer
         {
             await _consumer.Consume(async result =>
                  {
-                     var nodeAddress = new Uri(_config.GetConnectionString("opensearch") ?? throw new Exception());
-                     var connection = new ConnectionSettings(nodeAddress).DefaultIndex("Request");
+                     var connectionstring = _config.GetConnectionString("opensearch");
+                     var nodeAddress = new Uri(connectionstring ?? throw new Exception());
+                     var connection = new ConnectionSettings(nodeAddress).DefaultIndex("request");
                      var client = new OpenSearchClient(connection);
 
-                     client.Index<RequestLog>(result.Message.Value, x => x.Index("Request"));
+                     _logger.LogInformation($"LoggedRequest:" + client.Search<RequestLog>(e => e.Index("request").));
+                     _logger.LogInformation($"LoggedRequest:" + connectionstring);
 
-                     _logger.LogInformation($"LoggedRequest:");
+
+                     var response = client.Index<RequestLog>(result.Message.Value, x => x.Index("request"));
+
+                     _logger.LogInformation($"LoggedRequest:" + response.Index);
                      _logger.LogInformation($"Consumed message '{result.Message.Value.path}' at: partition '{result.Partition}'.");
                  }, stoppingToken);
         }
