@@ -46,6 +46,7 @@ services:
        - "8084:8084"
     networks:
        - kafka
+       - opensearch
     depends_on:
        - kafka
 
@@ -86,6 +87,8 @@ services:
     ports:
       - 9200:9200
       - 9600:9600
+    networks:
+      - opensearch
 
   
   opensearch-dashboards:
@@ -97,8 +100,10 @@ services:
       DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
     depends_on:
       - opensearch
-
+    networks:
+      - opensearch
 
 networks:
   kafka:
+  opensearch:
 

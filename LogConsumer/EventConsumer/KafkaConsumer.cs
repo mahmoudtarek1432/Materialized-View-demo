@@ -30,7 +30,9 @@ namespace logConsumer.EventConsumer
                      var connection = new ConnectionSettings(nodeAddress).DefaultIndex("request");
                      var client = new OpenSearchClient(connection);
 
-                     _logger.LogInformation($"LoggedRequest:" + client.Search<RequestLog>(e => e.Index("request").));
+                     _logger.LogInformation(client.Ping().DebugInformation);
+
+                     _logger.LogInformation($"LoggedRequest:" + client.Search<RequestLog>(e => e.Index("request")));
                      _logger.LogInformation($"LoggedRequest:" + connectionstring);
 
 
