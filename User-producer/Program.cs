@@ -71,6 +71,10 @@ app.MapGet("/topicInit", async () =>
 })
 .WithName("topicInit");
 
+app.MapPost("/api/body", async (HttpContext ctx) =>
+{
+   return new {status = 200, message = "working!"}
+});
 
 app.UseSwaggerUI();
 
