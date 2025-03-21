@@ -60,7 +60,7 @@ namespace User_producer.Middleware
                         Value = integrationEventData
                     };
 
-                    //var deliveryResult = await producerBuilder.ProduceAsync(EventTopics.LoggingTopic, kafkaMessage, context.RequestAborted);
+                    var deliveryResult = await producerBuilder.ProduceAsync(EventTopics.LoggingTopic, kafkaMessage, context.RequestAborted);
 
                     Console.WriteLine($"Incoming request: {context.Request.Method} {context.Request.Path}");
                 }
