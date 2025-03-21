@@ -17,6 +17,7 @@ namespace User_producer.Middleware
 
         public RequestLoggingMiddleware(RequestDelegate next)
         {
+            
             _config = new ProducerConfig
             {
                 BootstrapServers = "kafka:9092",
@@ -28,7 +29,8 @@ namespace User_producer.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            if (context.Request.Path.HasValue && context.Request.Path.Value.Contains("api"))
+
+               if (context.Request.Path.HasValue && context.Request.Path.Value.Contains("api"))
             {
 
                 using var producerBuilder = new ProducerBuilder<Null, RequestLog>(_config)
@@ -58,7 +60,7 @@ namespace User_producer.Middleware
                         Value = integrationEventData
                     };
 
-                    var deliveryResult = producerBuilder.ProduceAsync(EventTopics.LoggingTopic, kafkaMessage, context.RequestAborted).Result;
+                    //var deliveryResult = await producerBuilder.ProduceAsync(EventTopics.LoggingTopic, kafkaMessage, context.RequestAborted);
 
                     Console.WriteLine($"Incoming request: {context.Request.Method} {context.Request.Path}");
                 }
@@ -67,9 +69,10 @@ namespace User_producer.Middleware
                     Console.WriteLine(ex.ToString());
                 }
             }
-            await _next(context); // Call the next middleware
+            
 
             Console.WriteLine($"Response status: {context.Response.StatusCode}");
+
         }
 
         async Task<string> convertStream( Stream stream )

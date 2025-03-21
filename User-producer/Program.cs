@@ -30,7 +30,7 @@ app.UseHttpsRedirection();
 
 //seed the database
 
-app.MapGet("/refreshUsers", (ApplicationDatabase _db, CancellationToken cancelationToken) =>
+app.MapGet("/api/refreshUsers", (ApplicationDatabase _db, CancellationToken cancelationToken) =>
 {
     Seeding.Seed(_db);
 
@@ -38,7 +38,7 @@ app.MapGet("/refreshUsers", (ApplicationDatabase _db, CancellationToken cancelat
 })
 .WithName("refreshUsers");
 
-app.MapGet("/topicMetadata", () =>
+app.MapGet("/api/topicMetadata", () =>
 {
     var adminClientBuilder = new AdminClientBuilder(new AdminClientConfig
     {
@@ -52,7 +52,7 @@ app.MapGet("/topicMetadata", () =>
 .WithName("topicMetadata");
 
 
-app.MapGet("/topicInit", async () =>
+app.MapGet("/api/topicInit", async () =>
 {
     var adminClientBuilder = new AdminClientBuilder(new AdminClientConfig
     {
@@ -73,11 +73,17 @@ app.MapGet("/topicInit", async () =>
 
 app.MapPost("/api/body", async (HttpContext ctx) =>
 {
-   return new {status = 200, message = "working!"}
+    return new { status = 200, message = "working!" };
 });
 
 app.UseSwaggerUI();
 
-app.UseMiddleware<RequestLoggingMiddleware>();
+app.Use(async (ctx, next) =>
+{
+    await next.Invoke(ctx);
+
+    var middleware = new RequestLoggingMiddleware(next);
+    await middleware.Invoke(ctx);
+});
 
 app.Run();
