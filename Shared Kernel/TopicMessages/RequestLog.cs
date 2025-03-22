@@ -6,6 +6,7 @@ namespace Shared_Kernel.TopicMessages
     public class RequestLog : ISerializer<RequestLog>, IDeserializer<RequestLog>
     {
         public string path { get; set; }
+        public string Status { get; set; }
         public string ActionType { get; set; }
         public string RequestBody { get; set; }
         public string ResponseBody { get; set; }

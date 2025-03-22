@@ -53,6 +53,7 @@ namespace User_producer.Middleware
                         ResponseBody = responseBody,
                         RequestParams = context.Request.Query.Select(x => $"{x.Key}: {x.Value}").ToList(),
                         CreationDate = DateTime.Now,
+                        Status = $"{context.Response.StatusCode}",
                     };
 
                     var kafkaMessage = new Message<Null, RequestLog>
